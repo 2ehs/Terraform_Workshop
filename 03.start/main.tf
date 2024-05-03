@@ -1,10 +1,15 @@
-terraform {
-    backend "local" {
-        path = "state/terraform.tfstate"
+resource "local_file" "step7" {
+  content = ""
+  filename = "${path.module}/step7.txt"
+
+  lifecycle {
+    postcondition {
+      condition = self.content != ""
+      error_message = "content cannot empty"
     }
+  }
 }
 
-resource "local_file" "abc" {
-  content  = "123456!"
-  filename = "${path.module}/abc.txt"
+output "step7_content" {
+  value = local_file.step7.id
 }
